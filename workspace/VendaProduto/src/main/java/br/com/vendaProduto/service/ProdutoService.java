@@ -1,0 +1,108 @@
+package br.com.vendaProduto.service;
+
+import java.util.List;
+
+import javax.ws.rs.DELETE;
+import javax.ws.rs.GET;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+
+import com.google.gson.Gson;
+
+import br.com.vendaProduto.DAO.ProdutoDAO;
+import br.com.vendaProduto.domain.Produto;
+
+/**
+*
+* @author Kauai Guarilha
+*/
+@Path("produto")
+public class ProdutoService {
+	//http://localhost:8080/VendaProjeto/rest/produto
+	@GET
+	public String listar() {
+		
+		ProdutoDAO produtoDao = new ProdutoDAO();
+		List<Produto> produtos = produtoDao.listagem("nome");
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(produtos);
+		
+		return json;
+		
+	}
+	
+	//http://localhost:8080/VendaProjeto/rest/1
+	@GET
+	@Path("{codigo}")
+	public String buscar(@PathParam("codigo") Long codigo) {
+		
+		ProdutoDAO produtoDao = new ProdutoDAO();
+		Produto produto = produtoDao.buscar(codigo);
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(produto);
+		
+		return json;
+	}
+	
+	@POST
+	public String salvar(String json) {
+		
+		Gson gson = new Gson();
+		
+		Produto produto = gson.fromJson(json, Produto.class);
+		
+		ProdutoDAO produtoDao = new ProdutoDAO();
+		
+		produtoDao.inclusao(produto);
+		
+		String jsonSaida = gson.toJson(produto);
+		
+		return jsonSaida;
+	}
+	
+	@PUT
+	public String editar(String json) {
+		
+		Gson gson = new Gson();
+		
+		Produto produto = gson.fromJson(json, Produto.class);
+		
+		ProdutoDAO produtoDao = new ProdutoDAO();
+		
+		produtoDao.merge(produto);
+		
+		String jsonSaida = gson.toJson(produto);
+		
+		return jsonSaida;
+	}
+	
+	@DELETE
+	public String excluir(String json){
+		
+		Gson gson = new Gson();
+		
+		Produto produto = gson.fromJson(json, Produto.class);
+		
+		ProdutoDAO produtoDao = new ProdutoDAO();
+		
+		produtoDao.exclusao(produto);
+		
+		String jsonSaida = gson.toJson(produto);
+		
+		return jsonSaida;
+	}	
+}
+
+
+
+
+
+
+
+
+
+

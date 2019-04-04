@@ -1,0 +1,35 @@
+package br.com.vendaProduto.service;
+
+import java.util.List;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+
+import com.google.gson.Gson;
+
+import br.com.vendaProduto.DAO.CupomDAO;
+import br.com.vendaProduto.domain.Cupom;
+
+/**
+*
+* @author Kauai Guarilha
+*/
+@Path("cupom")
+public class CupomService {
+	//http://127.0.0.1:8080/VendaProduto/rest/cupom
+	@GET
+	public String listar() {
+		
+		CupomDAO cupomDao = new CupomDAO();
+		
+		List<Cupom> cupons = cupomDao.listagem("id_cupom");
+		
+		Gson gson = new Gson();
+		
+		String json = gson.toJson(cupons);
+		
+		return json;	
+	}
+	
+	
+}
